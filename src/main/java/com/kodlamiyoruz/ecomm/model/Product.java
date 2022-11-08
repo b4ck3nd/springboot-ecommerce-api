@@ -12,36 +12,36 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "PRODUCTS")
-//@ApiModel(value = "Product Api Model Documentation",description = "Model")
+@ApiModel(value = "Product models",description = "Model")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    //@ApiModelProperty(value = "unique productId field of product object")
+    @ApiModelProperty(notes = "unique productId field of product object",allowableValues = "Integer")
     private int productId;
 
-    //@ApiModelProperty(value = "productName field of product object")
+    @ApiModelProperty(notes = "productName field of product model",allowableValues = "String")
     private String productName;
-    //@ApiModelProperty(value = "productBrand field of product object")
+    @ApiModelProperty(notes = "productBrand field of product model",allowableValues = "String")
     private String productBrand;
-    //@ApiModelProperty(value = "productPrice field of product object")
+    @ApiModelProperty(notes = "productPrice field of product model",allowableValues = "Double")
     private double productPrice;
 
-    //@ApiModelProperty(value = "stock field of product object")
+    @ApiModelProperty(notes = "stock field of product model",allowableValues = "Integer")
     private int stock;
 
     @Column(updatable = false)
     @CreationTimestamp
-    //@ApiModelProperty(value = "createdDate field of product object - unupdatable field ")
+    @ApiModelProperty(notes = "createdDate field of product model",allowableValues = "Date")
     private Date createdDate;
 
 
     @ManyToOne
-    //@ApiModelProperty(value = "seller field of product object")
+    @ApiModelProperty(notes = "seller field of product model",allowableValues = "Seller")
     private Seller seller;
 
 
     @ManyToOne
-    //@ApiModelProperty(value = "category field of product object")
+    @ApiModelProperty(notes = "category field of product model",allowableValues = "Seller")
     private Category category;
 
     public Product(String productName,String productBrand,double productPrice,int stock){

@@ -1,6 +1,8 @@
 package com.kodlamiyoruz.ecomm.model;
 
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,18 +14,23 @@ import java.util.List;
 @Data
 @Entity
 @Table(name =  "CATEGORIES")
+@ApiModel(value ="Category models",description = "Model")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(notes = "unique identifier field of category model",allowableValues = "Integer")
     private int categoryId;
 
     @Column(nullable = false)
+    @ApiModelProperty(notes = "categoryname field of category model",allowableValues ="String" )
     private String categoryName;
 
     @Column(updatable = false)
     @CreationTimestamp
+    @ApiModelProperty(notes = "createdDate  field of  category model",allowableValues = "Date")
     private Date createdDate;
     @OneToMany
+    @ApiModelProperty(notes = "products of category field of  category model",allowableValues = "List of Products")
     private List<Product> products;
 
     public Category(String categoryName) {

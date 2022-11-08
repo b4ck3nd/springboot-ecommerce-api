@@ -11,6 +11,6 @@ public interface ProductService {
     ProductResponseDto findById(int id);
     List<ProductResponseDto> findByProductName(String productName);
     List<ProductResponseDto> findByProductBrand(String productBrand);
-    ProductResponseDto updateByProductId(int id, ProductUpdateRequestDto productUpdateRequestDto);
+    ProductResponseDto updateByProductId(ProductUpdateRequestDto productUpdateRequestDto);
     List<ProductResponseDto> findAll();
 }

@@ -4,6 +4,7 @@ package com.kodlamiyoruz.ecomm.controller;
 import com.kodlamiyoruz.ecomm.dto.category.CategoryCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.category.CategoryResponseDto;
 import com.kodlamiyoruz.ecomm.service.category.CategoryService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/category")
+@Api(value = "category")
 public class CategoryController {
 
     @Autowired

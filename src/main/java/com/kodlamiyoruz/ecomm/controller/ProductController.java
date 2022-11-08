@@ -44,9 +44,10 @@ public class ProductController {
 
     }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<ProductResponseDto> updateByProductId(@PathVariable int id, @RequestBody ProductUpdateRequestDto productUpdateRequestDto) {
-        ProductResponseDto dto = productService.updateByProductId(id, productUpdateRequestDto);
+    //@PostMapping("/update")
+    @RequestMapping(value = "/update",method = {RequestMethod.PUT,RequestMethod.GET})
+    public ResponseEntity<ProductResponseDto> updateByProductId(@RequestBody ProductUpdateRequestDto productUpdateRequestDto) {
+        ProductResponseDto dto = productService.updateByProductId(productUpdateRequestDto);
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 

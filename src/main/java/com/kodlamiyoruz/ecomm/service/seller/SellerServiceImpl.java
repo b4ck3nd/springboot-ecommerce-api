@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +66,21 @@ public class SellerServiceImpl implements SellerService {
         SellerResponseDto dto=sellerConverter.sellerToSellerResponseDto(seller);
         return dto;
 
+    }
+
+    @PostConstruct
+    private void test() {
+        Seller seller=new Seller();
+        seller.setName("seller 1");
+        seller.setEmail("seller1@seller");
+        sellerRepository.save(seller);
+    }
+
+    @PostConstruct
+    private void test2() {
+        Seller seller=new Seller();
+        seller.setEmail("seller2@seller");
+        seller.setName("iki numarali seller");
+        sellerRepository.save(seller);
     }
 }

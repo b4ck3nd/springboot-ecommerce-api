@@ -7,6 +7,7 @@ import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.ProductUpdateRequestDto;
 import com.kodlamiyoruz.ecomm.exception.CategoryException;
 import com.kodlamiyoruz.ecomm.exception.NotFoundException;
+import com.kodlamiyoruz.ecomm.exception.ProductException;
 import com.kodlamiyoruz.ecomm.exception.SellerException;
 import com.kodlamiyoruz.ecomm.model.Category;
 import com.kodlamiyoruz.ecomm.model.Product;
@@ -96,13 +97,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto updateByProductId(int id, ProductUpdateRequestDto productUpdateRequestDto) {
+    public ProductResponseDto updateByProductId(ProductUpdateRequestDto productUpdateRequestDto) {
+        /*
         Optional<Product> get = productRepository.findById(id);
         if (!get.isPresent()) {
             throw new NotFoundException(id);
         }
         Product product=updateProduct(get.get(), productUpdateRequestDto);
         return  productConverter.productToProductResponseDto(productRepository.save(product));
+
+        */
+        if ( !(productRepository.existsById(productUpdateRequestDto.getProductId())) ) {
+            throw new ProductException(productUpdateRequestDto.getProductId());
+        }
+        Optional<Product> prod = productRepository.findById(productUpdateRequestDto.getProductId());
+        Product product=updateProduct(prod.get(),productUpdateRequestDto);
+        productRepository.save(product);
+        return productConverter.productToProductResponseDto(product);
+
 
     }
 

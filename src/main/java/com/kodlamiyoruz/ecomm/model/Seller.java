@@ -4,12 +4,11 @@ package com.kodlamiyoruz.ecomm.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -23,16 +22,21 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(name = "unique productId field of product object",allowableValues = "Integer")
+    @Column(name = "seller_id")
     private int sellerId;
 
     @ApiModelProperty(notes = "name field of seller object",allowableValues = "String")
+    @Column(name = "seller_name")
     private String name;
-    @Column(unique = true)
-    @Email
+    @Column(unique = true,name = "seller_email")
+    @Email(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z0-9.-]{2,5}$",message = "invalid email")
+    //@ValidEmail
+    @NotNull
+    @Size(min = 1,message = "invalid email")
     @ApiModelProperty(notes = "email field of seller object",allowableValues = "String")
     private String email;
 
-    @Column(updatable = false)
+    @Column(updatable = false,name = "created_date")
     @CreationTimestamp
     @ApiModelProperty(notes = "createdDate field of seller object",allowableValues = "Date")
     private Date createdDate;

@@ -44,12 +44,10 @@ public class ProductServiceImpl implements ProductService {
         if (!(categoryRepository.existsById(dto.getCategoryId()))) {
             throw new CategoryException(dto.getCategoryId());
         }
-
         Optional<Category> category = categoryRepository.findById(dto.getCategoryId());
         if (!category.isPresent()) {
             throw new CategoryException(category.get().getCategoryId());
         }
-
         Optional<Seller> seller = sellerRepository.findById(dto.getSellerId());
 
         if (!seller.isPresent()) {
@@ -68,14 +66,11 @@ public class ProductServiceImpl implements ProductService {
 
         if (!byId.isPresent())  {
             throw new NotFoundException(id);
-
         }
-
         String categoryName=byId.get().getCategory().getCategoryName();
         String sellerName = byId.get().getSeller().getName();
         ProductResponseDto dto = productConverter.productToProductResponseDto(byId.get());
         return addCategoryNameAndSellerNameToProductResponseDto(dto,categoryName,sellerName);
-
     }
 
     @Override
@@ -114,8 +109,6 @@ public class ProductServiceImpl implements ProductService {
         Product product=updateProduct(prod.get(),productUpdateRequestDto);
         productRepository.save(product);
         return productConverter.productToProductResponseDto(product);
-
-
     }
 
     @Override

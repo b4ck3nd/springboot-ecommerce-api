@@ -17,19 +17,24 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(notes = "unique productId field of product object",allowableValues = "Integer")
+    @Column(name = "product_id")
     private int productId;
 
     @ApiModelProperty(notes = "productName field of product model",allowableValues = "String")
+    @Column(name = "product_name")
     private String productName;
     @ApiModelProperty(notes = "productBrand field of product model",allowableValues = "String")
+    @Column(name = "product_brand")
     private String productBrand;
     @ApiModelProperty(notes = "productPrice field of product model",allowableValues = "Double")
+    @Column(name = "product_price")
     private double productPrice;
 
     @ApiModelProperty(notes = "stock field of product model",allowableValues = "Integer")
+    @Column(name = "stock")
     private int stock;
 
-    @Column(updatable = false)
+    @Column(updatable = false,name = "created_date")
     @CreationTimestamp
     @ApiModelProperty(notes = "createdDate field of product model",allowableValues = "Date")
     private Date createdDate;

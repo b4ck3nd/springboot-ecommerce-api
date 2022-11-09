@@ -4,7 +4,6 @@ package com.kodlamiyoruz.ecomm.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -19,13 +18,14 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(notes = "unique identifier field of category model",allowableValues = "Integer")
+    @Column(name = "category_id")
     private int categoryId;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "category_name")
     @ApiModelProperty(notes = "categoryname field of category model",allowableValues ="String" )
     private String categoryName;
 
-    @Column(updatable = false)
+    @Column(updatable = false,name = "created_date")
     @CreationTimestamp
     @ApiModelProperty(notes = "createdDate  field of  category model",allowableValues = "Date")
     private Date createdDate;

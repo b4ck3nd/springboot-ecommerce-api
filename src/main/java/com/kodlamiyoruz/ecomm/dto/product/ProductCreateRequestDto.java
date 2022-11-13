@@ -12,5 +12,4 @@ public class ProductCreateRequestDto {
     private int categoryId;
     private int sellerId;
 
-
 }

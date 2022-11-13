@@ -1,16 +1,22 @@
 package com.kodlamiyoruz.ecomm.service.user;
 
 
+import com.kodlamiyoruz.ecomm.converter.ProductCommentConverter;
 import com.kodlamiyoruz.ecomm.converter.UserConverter;
+import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserUpdateRequestDto;
 import com.kodlamiyoruz.ecomm.exception.CustomUserException;
+import com.kodlamiyoruz.ecomm.model.ProductComment;
 import com.kodlamiyoruz.ecomm.model.User;
 import com.kodlamiyoruz.ecomm.repository.UserRepository;
+import com.kodlamiyoruz.ecomm.service.product.comment.ProductCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +30,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserConverter userConverter;
 
+    @Autowired
+    ProductCommentService commentService;
+    @Autowired
+    ProductCommentConverter commentConverter;
 
     @Override
     public void add(UserCreateRequestDto dto) {
@@ -98,7 +108,29 @@ public class UserServiceImpl implements UserService {
         return userConverter.userToUserResponseDto(user);
     }
 
+    @Override
+    public List<ProductCommentResponseDto> findProductCommentsByUserId(int id) {
+        if (!userRepository.existsById(id)) {
+            throw new CustomUserException(id);
+        }
+        User user = userRepository.findById(id).get();
+        List<ProductComment> productComment = user.getProductComment();
+        return  commentConverter.productCommentListToProductCommentDtoList(productComment);
+    }
 
+    /*
+    @PostConstruct
+    private void test() {
+        User user=new User();
+        user.setUserName("test isimli kisi");
+        user.setEmail("testisimlikisi@kisi.com");
+        user.setPassword("passwordneymisbe");
+        userRepository.save(user);
+
+    }
+
+
+     */
 
 
 }

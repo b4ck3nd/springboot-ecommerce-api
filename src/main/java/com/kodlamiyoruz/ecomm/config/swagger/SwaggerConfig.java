@@ -1,4 +1,4 @@
-package com.kodlamiyoruz.ecomm.config;
+package com.kodlamiyoruz.ecomm.config.swagger;
 
 
 import org.springframework.context.annotation.Bean;

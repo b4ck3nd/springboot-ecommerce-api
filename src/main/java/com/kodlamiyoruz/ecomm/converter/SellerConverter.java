@@ -23,7 +23,7 @@ public class SellerConverter {
             dto.setName(value.getName());
             dto.setCreatedDate(value.getCreatedDate().toString());
             dto.setTotalProducts(value.getProducts().size());
-            dto.setSellerId(value.getSellerId());
+            dto.setSellerId(value.getId());
             dtos.add(dto);
 
         });
@@ -34,7 +34,7 @@ public class SellerConverter {
         dto.setCreatedDate(seller.getCreatedDate().toString());
         dto.setName(seller.getName());
         dto.setTotalProducts(seller.getProducts().size());
-        dto.setSellerId(seller.getSellerId());
+        dto.setSellerId(seller.getId());
         return dto;
     }
 

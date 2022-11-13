@@ -1,14 +1,18 @@
 package com.kodlamiyoruz.ecomm.service.seller;
 
 
+import com.kodlamiyoruz.ecomm.converter.ProductConverter;
 import com.kodlamiyoruz.ecomm.converter.SellerConverter;
+import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerUpdateRequestDto;
 import com.kodlamiyoruz.ecomm.exception.CategoryException;
 import com.kodlamiyoruz.ecomm.exception.NotFoundException;
 import com.kodlamiyoruz.ecomm.exception.SellerException;
+import com.kodlamiyoruz.ecomm.model.Product;
 import com.kodlamiyoruz.ecomm.model.Seller;
+import com.kodlamiyoruz.ecomm.repository.ProductRepository;
 import com.kodlamiyoruz.ecomm.repository.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,23 +31,42 @@ public class SellerServiceImpl implements SellerService {
     @Autowired
     SellerConverter sellerConverter;
 
+    @Autowired
+    ProductConverter productConverter;
+
+    @Autowired
+    ProductRepository productRepository;
+
 
     @Override
-    public void add(SellerCreateRequestDto sellerCreateRequestDto) throws SellerException{
+    public void add(SellerCreateRequestDto sellerCreateRequestDto){
         if (sellerRepository.existsSellerByEmail(sellerCreateRequestDto.getEmail())) {
-            throw new SellerException("email was found");
+            throw new SellerException("email not found");
         }
         sellerRepository.save(sellerConverter.sellerCreateRequestDtoToSeller(sellerCreateRequestDto));
     }
 
     @Override
     public boolean deleteById(int id) {
-
+        /*
         if (sellerRepository.existsById(id)) {
+
+            Optional<Seller> seller = sellerRepository.findById(id);
+            if (!CollectionUtils.isEmpty(seller.get().getProducts())) {
+                List<Product> products = seller.get().getProducts();
+                products.forEach(val -> {
+                    productRepository.delete(val);
+                    products.remove(val);
+                });
+            }
             sellerRepository.deleteById(id);
             return true;
         }
-        return false;
+        */
+        if (sellerRepository.existsById(id)) {
+            sellerRepository.deleteById(id);
+            return true;
+        } else return false;
     }
 
     @Override
@@ -55,7 +78,12 @@ public class SellerServiceImpl implements SellerService {
     }
     @Override
     public SellerResponseDto findById(int id) {
-        Seller seller=sellerRepository.findBySellerId(id);
+        Optional<Seller> byId = sellerRepository.findById(id);
+        if (!byId.isPresent()) {
+            throw new SellerException(id);
+        }
+        Seller seller=byId.get();
+
         SellerResponseDto dto=sellerConverter.sellerToSellerResponseDto(seller);
         return dto;
     }
@@ -73,7 +101,18 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    @Override
+    public List<ProductResponseDto> findAllProductsBySellerId(int id) {
+        if (!sellerRepository.existsById(id)) {
+            throw new SellerException(id);
+        }
+        Seller seller = sellerRepository.findById(id).get();
+        List<Product> products = seller.getProducts();
+        return productConverter.productListToProductResponseDtoList(products);
+    }
 
+
+    /*
     @PostConstruct
     private void test() {
         Seller seller=new Seller();
@@ -89,4 +128,6 @@ public class SellerServiceImpl implements SellerService {
         seller.setName("iki numarali seller");
         sellerRepository.save(seller);
     }
+
+     */
 }

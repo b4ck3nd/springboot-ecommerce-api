@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,17 +18,17 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
     @ApiModelProperty(notes = "unique identifier field of address object",allowableValues = "Integer")
-    private int addressId;
+    private int id;
+    @Column(name = "country")
+    @ApiModelProperty(notes = "country field of address object",allowableValues = "String")
+    private String country;
 
     @Column(name = "city")
     @ApiModelProperty(notes = "city field of address object",allowableValues = "String")
     private String city;
 
-    @Column(name = "country")
-    @ApiModelProperty(notes = "country field of address object",allowableValues = "String")
-    private String country;
+
 
     @Column(name = "district")
     @ApiModelProperty(notes = "district field of address object",allowableValues = "String")
@@ -61,10 +62,15 @@ public class Address {
         this.apartmentNumber=apartmentNumber;
     }
 
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "Address{" +
+                "country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", district='" + district + '\'' +
+                ", street='" + street + '\'' +
+                ", apartmentNumber='" + apartmentNumber + '\'' +
+                ", created at= " + createdDate +
+                '}';
+    }
 }

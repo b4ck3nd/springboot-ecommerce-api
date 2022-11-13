@@ -1,6 +1,7 @@
 package com.kodlamiyoruz.ecomm.controller;
 
 
+import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserUpdateRequestDto;
@@ -10,10 +11,14 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/user")
@@ -55,6 +60,13 @@ public class UserController {
     public ResponseEntity<UserResponseDto> updateByBy(@RequestBody UserUpdateRequestDto dto) {
         UserResponseDto user = userService.updateByUserId(dto);
         return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<ProductCommentResponseDto>> findProductCommentByUserId(@PathVariable int id) {
+        List<ProductCommentResponseDto> comments = userService.findProductCommentsByUserId(id);
+        return new ResponseEntity<>(comments,HttpStatus.OK);
     }
 
 

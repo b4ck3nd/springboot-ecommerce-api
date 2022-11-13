@@ -4,10 +4,12 @@ package com.kodlamiyoruz.ecomm.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,7 +20,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(notes = "unique productId field of product object",allowableValues = "Integer")
     @Column(name = "product_id")
-    private int productId;
+    private int id;
 
     @ApiModelProperty(notes = "productName field of product model",allowableValues = "String")
     @Column(name = "product_name")
@@ -40,14 +42,18 @@ public class Product {
     private Date createdDate;
 
 
-    @ManyToOne
+    @ManyToOne()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "seller field of product model",allowableValues = "Seller")
     private Seller seller;
 
 
-    @ManyToOne
+    @ManyToOne()
     @ApiModelProperty(notes = "category field of product model",allowableValues = "Seller")
     private Category category;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<ProductComment> productComments;
 
     public Product(String productName,String productBrand,double productPrice,int stock){
         this.productName=productName;

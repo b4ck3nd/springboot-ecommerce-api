@@ -14,13 +14,13 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target({ TYPE, FIELD, ANNOTATION_TYPE })
+@Target({  FIELD })
 @Retention(RUNTIME)
 @Constraint(validatedBy = EmailValidator.class)
 @Documented
 public @interface ValidEmail {
 
-    String message() default "invalid email";
+    String message() default "invalid email format";
 
     Class<?>[] groups() default {};
 

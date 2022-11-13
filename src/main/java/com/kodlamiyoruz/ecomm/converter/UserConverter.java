@@ -28,7 +28,7 @@ public class UserConverter {
             dto.setUserName(value.getUserName());
             dto.setEmail(value.getEmail());
             dto.setCreatedDate(value.getCreatedDate().toString());
-            dto.setUserId(value.getUserId());
+            dto.setUserId(value.getId());
             dtos.add(dto);
         });
         return dtos;
@@ -41,7 +41,7 @@ public class UserConverter {
         dto.setUserName(user.getUserName());
         dto.setEmail(user.getEmail());
         dto.setCreatedDate(user.getCreatedDate().toString());
-        dto.setUserId(user.getUserId());
+        dto.setUserId(user.getId());
         return dto;
     }
     public User userUpdateRequestDtoToUser(UserUpdateRequestDto dto) {

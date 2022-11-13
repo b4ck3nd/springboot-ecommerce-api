@@ -1,24 +1,30 @@
 package com.kodlamiyoruz.ecomm.service.product;
 
 
+import com.kodlamiyoruz.ecomm.converter.ProductCommentConverter;
 import com.kodlamiyoruz.ecomm.converter.ProductConverter;
 import com.kodlamiyoruz.ecomm.dto.product.ProductCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.ProductUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.exception.CategoryException;
 import com.kodlamiyoruz.ecomm.exception.NotFoundException;
 import com.kodlamiyoruz.ecomm.exception.ProductException;
 import com.kodlamiyoruz.ecomm.exception.SellerException;
 import com.kodlamiyoruz.ecomm.model.Category;
 import com.kodlamiyoruz.ecomm.model.Product;
+import com.kodlamiyoruz.ecomm.model.ProductComment;
 import com.kodlamiyoruz.ecomm.model.Seller;
 import com.kodlamiyoruz.ecomm.repository.CategoryRepository;
+import com.kodlamiyoruz.ecomm.repository.ProductCommentRepository;
 import com.kodlamiyoruz.ecomm.repository.ProductRepository;
 import com.kodlamiyoruz.ecomm.repository.SellerRepository;
+import com.kodlamiyoruz.ecomm.service.product.comment.ProductCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +43,15 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     SellerRepository sellerRepository;
 
+    @Autowired
+    ProductCommentRepository commentRepository;
+
+    @Autowired
+    ProductCommentConverter commentConverter;
+
+    @Autowired
+    ProductCommentService commentService;
+
 
     @Override
     public boolean add(ProductCreateRequestDto dto) {
@@ -44,21 +59,27 @@ public class ProductServiceImpl implements ProductService {
         if (!(categoryRepository.existsById(dto.getCategoryId()))) {
             throw new CategoryException(dto.getCategoryId());
         }
-        Optional<Category> category = categoryRepository.findById(dto.getCategoryId());
-        if (!category.isPresent()) {
-            throw new CategoryException(category.get().getCategoryId());
-        }
-        Optional<Seller> seller = sellerRepository.findById(dto.getSellerId());
+        Category category = categoryRepository.findById(dto.getCategoryId()).get();
+        Seller seller = sellerRepository.findById(dto.getSellerId()).get();
 
-        if (!seller.isPresent()) {
+        if (!sellerRepository.existsById(dto.getSellerId())) {
             throw new SellerException("not found any seller with this id: " + dto.getSellerId());
         }
-        product.setCategory(category.get());
-        product.setSeller(seller.get());
+
+
+        product.setCategory(category);
+        List<Product> productList=new ArrayList<>();
+        productList.add(product);
+        category.setProducts(productList);
+        product.setSeller(seller);
+        seller.setProducts(productList);
         productRepository.save(product);
+        categoryRepository.save(category);
+        sellerRepository.save(seller);
+
+
         return true;
     }
-
 
     @Override
     public ProductResponseDto findById(int id) {
@@ -117,6 +138,47 @@ public class ProductServiceImpl implements ProductService {
 
         return productConverter.productListToProductResponseDtoList(all);
     }
+
+    @Override
+    public void deleteById(int id) {
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+        }
+        else {
+            throw new ProductException(id);
+        }
+
+    }
+
+    @Override
+    public List<ProductCommentResponseDto> findProductCommentsByProductId(int id) {
+
+        if (!productRepository.existsById(id)) {
+            throw new ProductException(id);
+        }
+        Product product = productRepository.findById(id).get();
+        List<ProductComment> commentList = product.getProductComments();
+        return commentConverter.productCommentListToProductCommentDtoList(commentList);
+
+        /*
+        List<ProductComment> comments = productRepository.findById(id).get().getProductComments();
+        return  commentConverter.productCommentListToProductCommentDtoList(comments);
+        */
+    }
+
+    @Override
+    public List<ProductResponseDto> searchProductByProductName(String productName) {
+        List<Product> products = productRepository.findByProductNameContaining(productName);
+        return  productConverter.productListToProductResponseDtoList(products);
+    }
+
+    @Override
+    public List<ProductResponseDto> searchProductByProductBrand(String productBrand) {
+        List<Product> products = productRepository.findByProductBrandContaining(productBrand);
+        return productConverter.productListToProductResponseDtoList(products);
+    }
+
+
 
     private Product updateProduct(Product product, ProductUpdateRequestDto dto) {
         Product p=product;

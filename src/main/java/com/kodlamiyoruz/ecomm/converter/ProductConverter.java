@@ -44,7 +44,7 @@ public class ProductConverter {
         */
         for (Product p : products) {
             ProductResponseDto dto= new ProductResponseDto();
-            dto.setProductId(p.getProductId());
+            dto.setProductId(p.getId());
             dto.setProductName(p.getProductName());
             dto.setProductBrand(p.getProductBrand());
             dto.setProductPrice(p.getProductPrice());
@@ -59,7 +59,7 @@ public class ProductConverter {
     
     public ProductResponseDto productToProductResponseDto(Product product) {
         ProductResponseDto dto=new ProductResponseDto();
-        dto.setProductId(product.getProductId());
+        dto.setProductId(product.getId());
         dto.setProductName(product.getProductName());
         dto.setProductBrand(product.getProductBrand());
         dto.setProductPrice(product.getProductPrice());

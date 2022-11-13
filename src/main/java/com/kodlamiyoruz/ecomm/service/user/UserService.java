@@ -1,5 +1,6 @@
 package com.kodlamiyoruz.ecomm.service.user;
 
+import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserUpdateRequestDto;
@@ -14,5 +15,6 @@ public interface UserService {
     UserResponseDto findByUserName(String userName);
     UserResponseDto findByEmail(String email);
     UserResponseDto updateByUserId(UserUpdateRequestDto dto);
+    List<ProductCommentResponseDto> findProductCommentsByUserId(int id);
 
 }

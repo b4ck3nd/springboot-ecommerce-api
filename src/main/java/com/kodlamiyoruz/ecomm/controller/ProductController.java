@@ -4,15 +4,21 @@ package com.kodlamiyoruz.ecomm.controller;
 import com.kodlamiyoruz.ecomm.dto.product.ProductCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.ProductUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.service.product.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/product")
@@ -72,5 +78,23 @@ public class ProductController {
         }
 
     }
+
+    @RequestMapping(value = "/{id}/delete",method = {RequestMethod.GET,RequestMethod.DELETE})
+    @ApiOperation(value = "delete any product by productid",notes = "delete any product by productid")
+    public ResponseEntity<String> deleteById(@PathVariable int id) {
+        productService.deleteById(id);
+        return new ResponseEntity<>("deleted",HttpStatus.OK);
+    }
+
+   @GetMapping("/{id}/comments")
+    public ResponseEntity<List<ProductCommentResponseDto>> findProductCommentsByProductId(@PathVariable int id) {
+        List<ProductCommentResponseDto> dtos = productService.findProductCommentsByProductId(id);
+        return new ResponseEntity<>(dtos,HttpStatus.OK);
+    }
+
+
+
+
+
 
 }

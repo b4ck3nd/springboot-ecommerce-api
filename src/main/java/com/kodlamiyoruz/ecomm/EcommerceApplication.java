@@ -19,8 +19,6 @@ public class EcommerceApplication implements CommandLineRunner {
 	@Autowired
 	ProductRepository productRepository;
 	@Autowired
-	UserRepository userRepository;
-	@Autowired
 	SellerRepository sellerRepository;
 	@Autowired
 	CategoryRepository categoryRepository;
@@ -31,8 +29,9 @@ public class EcommerceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		/*
 		Product p=new Product();
-		Product p3=new Product();
 		Category c=new Category();
 		Seller seller=new Seller();
 
@@ -48,18 +47,13 @@ public class EcommerceApplication implements CommandLineRunner {
 		p.setProductPrice(1.0);
 		p.setCategory(c);
 		p.setSeller(seller);
-		p3.setProductBrand("mavi");
-		p3.setProductName("dik yaka polar");
-		p3.setStock(1);
-		p3.setProductPrice(1.0);
-		p3.setCategory(c);
-		p3.setSeller(seller);
 		productRepository.save(p);
 		seller.setProducts(Arrays.asList(p));
 		sellerRepository.save(seller);
 		c.setProducts(Arrays.asList(p));
 		categoryRepository.save(c);
 
+		*/
 
 	}
 

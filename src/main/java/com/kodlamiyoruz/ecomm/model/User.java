@@ -4,6 +4,7 @@ package com.kodlamiyoruz.ecomm.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(notes = "unique identifier field of user object",allowableValues = "Integer")
-    private int userId;
+    private int id;
 
     @NotNull(message = "username cannot be empty and be unique")
     @Column(name = "username")
@@ -43,7 +44,8 @@ public class User {
     @ApiModelProperty(notes = "createdDate field of user object",allowableValues = "Date")
     private Date createdDate;
 
-    @OneToMany
+    @OneToMany()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "list of productcomment field of user object",allowableValues = "List of ProductComment")
     private List<ProductComment> productComment;
 
@@ -51,6 +53,17 @@ public class User {
     @OneToMany
     @ApiModelProperty(notes = "list of address field of user object",allowableValues = "List of Address")
     private List<Address> address;
+/*
+    @OneToMany
+    @ApiModelProperty(value = "list of order field of user object",notes = "list of order field of user object",allowableValues = "List of Order")
+    private List<Order> orders;
+
+    @OneToMany(targetEntity = CreditCard.class)
+    @JoinColumn(name = "creditcard",referencedColumnName = "id")
+    @ApiModelProperty(value = "list of creditcard field of user object",notes = "list of creditcard field of user object",allowableValues = "List of CreditCard")
+    private List<CreditCard> creditCards;
+
+ */
 
     public  User() {
         this.createdDate=new Date();

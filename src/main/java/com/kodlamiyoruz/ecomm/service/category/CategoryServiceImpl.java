@@ -73,6 +73,8 @@ public class CategoryServiceImpl implements CategoryService {
        }
     }
 
+    /*
+
     @PostConstruct
     public void test1() {
         Category category=new Category();
@@ -105,6 +107,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
+
+     */
 
 
 }

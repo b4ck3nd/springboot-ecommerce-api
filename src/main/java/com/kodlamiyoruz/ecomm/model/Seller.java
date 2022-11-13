@@ -4,6 +4,7 @@ package com.kodlamiyoruz.ecomm.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -23,7 +24,7 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @ApiModelProperty(name = "unique productId field of product object",allowableValues = "Integer")
     @Column(name = "seller_id")
-    private int sellerId;
+    private int id;
 
     @ApiModelProperty(notes = "name field of seller object",allowableValues = "String")
     @Column(name = "seller_name")
@@ -41,7 +42,8 @@ public class Seller {
     @ApiModelProperty(notes = "createdDate field of seller object",allowableValues = "Date")
     private Date createdDate;
 
-    @OneToMany
+    @OneToMany()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "list of products field of seller object",allowableValues = "List of Products")
     private List<Product> products;
 

@@ -2,6 +2,7 @@ package com.kodlamiyoruz.ecomm.service.seller;
 
 import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerCreateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.seller.SellerFollowerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerUpdateRequestDto;
 import com.kodlamiyoruz.ecomm.model.Product;
@@ -16,5 +17,6 @@ public interface SellerService {
     SellerResponseDto findById(int id);
     SellerResponseDto updateById(SellerUpdateRequestDto dto);
     List<ProductResponseDto> findAllProductsBySellerId(int id);
+    List<SellerFollowerResponseDto> findAllFollowerUserBySellerId(int id);
 
 }

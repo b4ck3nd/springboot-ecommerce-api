@@ -41,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
     OrderConverter orderConverter;
 
 
+    @Transactional
     @Override
     public void createOrder(OrderCreateRequestDto dto) {
         if ( !productRepository.existsById(dto.getProductId())) {
@@ -67,15 +68,12 @@ public class OrderServiceImpl implements OrderService {
         order.setProductName(product.getProductName());
         order.setProductPrice(product.getProductPrice());
         order.setProductBrand(product.getProductBrand());
-        orderRepository.save(order);
         productRepository.save(product);
+        orderRepository.save(order);
+
 
     }
 
-    @Override
-    public OrderResponseDto findOrderByOrderId(int id) {
-        return null;
-    }
 
     @Override
     public List<OrderResponseDto> findAll() {
@@ -100,33 +98,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
-    @Transactional
-    @Override
-    public void add(OrderCreateRequestDto dto) {
-        if ( !productRepository.existsById(dto.getProductId())) {
-            throw new ProductException(dto.getProductId());
-        }
-        if (!userRepository.existsById(dto.getUserId())) {
-            throw new CustomUserException(dto.getUserId());
-        }
-        if (!addressRepository.existsById(dto.getAddressId())) {
-            throw new AddressException(dto.getAddressId());
-        }
-        Product product = productRepository.findById(dto.getProductId()).get();
-        int currentStock=product.getStock();
-        product.setStock(currentStock-1);
-        productRepository.save(product);
-        User user = userRepository.findById(dto.getUserId()).get();
-        Address address = addressRepository.findById(dto.getUserId()).get();
-        Order order=new Order();
-        order.setUser(user);
-        order.setAddress(address);
-        order.setQuantity(dto.getQuantity());
-        order.setProductName(product.getProductName());
-        order.setProductPrice(product.getProductPrice());
-        order.setProductBrand(product.getProductBrand());
-        orderRepository.save(order);
-    }
+   
 
     @Override
     public OrderResponseDto findById(int id) {

@@ -2,9 +2,7 @@ package com.kodlamiyoruz.ecomm.controller;
 
 
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
-import com.kodlamiyoruz.ecomm.dto.user.UserCreateRequestDto;
-import com.kodlamiyoruz.ecomm.dto.user.UserResponseDto;
-import com.kodlamiyoruz.ecomm.dto.user.UserUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.user.*;
 import com.kodlamiyoruz.ecomm.service.user.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,6 +66,43 @@ public class UserController {
         List<ProductCommentResponseDto> comments = userService.findProductCommentsByUserId(id);
         return new ResponseEntity<>(comments,HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/creditcard")
+    public ResponseEntity<List<CreditCardResponseDto>> findAllCreditCardByUserId(@PathVariable int id) {
+        List<CreditCardResponseDto> dtos = userService.findAllCreditCardByUserId(id);
+        return new ResponseEntity<>(dtos,HttpStatus.OK);
+    }
+    @PostMapping(value = "/creditcard/add")
+    public ResponseEntity<String> addCreditCardToUser(@RequestBody CreditCardCreateRequestDto dto) {
+        userService.addCreditCard(dto);
+        return new ResponseEntity<>("added",HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/creditcard/{creditCardId}")
+    public ResponseEntity<CreditCardResponseDto> findCreditCardByUserIdAndCreditCardId(@PathVariable int userId,@PathVariable int creditCardId) {
+        CreditCardResponseDto card = userService.findCreditCardByUserIdAndCreditCardId(userId, creditCardId);
+        return new ResponseEntity<>(card,HttpStatus.OK);
+    }
+
+    //@GetMapping("/{id}/following")
+    @RequestMapping(value = "/{id}/following",method = RequestMethod.GET)
+    public ResponseEntity<List<UserFollowingSellerResponseDto>> findAllFollowingSeller(@PathVariable("id") int id) {
+        List<UserFollowingSellerResponseDto> dtos = userService.followingSeller(Integer.parseInt(String.valueOf(id)));
+        return new ResponseEntity<>(dtos,HttpStatus.OK);
+    }
+
+    @PostMapping("/following/add")
+    public ResponseEntity<String> followSellerBySellerId(@RequestBody UserFollowSellerRequestDto dto) {
+        userService.followSellerBySellerId(dto);
+        return new ResponseEntity<>("seller following now",HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/following/remove",method = RequestMethod.DELETE)
+    public ResponseEntity<String> removeFollowingSellerBySellerId(@RequestBody UserUnfollowSellerRequestDto dto) {
+        userService.removeFollowingSeller(dto.getUserId(),dto.getSellerId());
+        return new ResponseEntity<>("seller unfollowing",HttpStatus.OK);
+    }
+
 
 
 }

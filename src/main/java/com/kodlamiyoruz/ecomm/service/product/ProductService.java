@@ -1,8 +1,6 @@
 package com.kodlamiyoruz.ecomm.service.product;
 
-import com.kodlamiyoruz.ecomm.dto.product.ProductCreateRequestDto;
-import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
-import com.kodlamiyoruz.ecomm.dto.product.ProductUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.product.*;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 
 import java.util.List;
@@ -19,5 +17,8 @@ public interface ProductService {
     List<ProductResponseDto> searchProductByProductName(String productName);
 
     List<ProductResponseDto> searchProductByProductBrand(String productBrand);
+
+
+
 
 }

@@ -3,8 +3,10 @@ package com.kodlamiyoruz.ecomm.controller;
 
 import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerCreateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.seller.SellerFollowerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.user.UserFollowingSellerResponseDto;
 import com.kodlamiyoruz.ecomm.model.Product;
 import com.kodlamiyoruz.ecomm.service.seller.SellerService;
 import io.swagger.annotations.Api;
@@ -76,6 +78,11 @@ public class SellerController {
         return new ResponseEntity<>(all,HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/followers")
+    public ResponseEntity<List<SellerFollowerResponseDto>> findAllFollowerUserBySellerId(@PathVariable int id) {
+        List<SellerFollowerResponseDto> followers = sellerService.findAllFollowerUserBySellerId(id);
+        return new ResponseEntity<>(followers,HttpStatus.OK);
+    }
 
 
 }

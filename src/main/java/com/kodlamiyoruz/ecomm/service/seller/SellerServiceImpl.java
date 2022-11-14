@@ -5,6 +5,7 @@ import com.kodlamiyoruz.ecomm.converter.ProductConverter;
 import com.kodlamiyoruz.ecomm.converter.SellerConverter;
 import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerCreateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.seller.SellerFollowerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.seller.SellerUpdateRequestDto;
 import com.kodlamiyoruz.ecomm.exception.CategoryException;
@@ -12,8 +13,10 @@ import com.kodlamiyoruz.ecomm.exception.NotFoundException;
 import com.kodlamiyoruz.ecomm.exception.SellerException;
 import com.kodlamiyoruz.ecomm.model.Product;
 import com.kodlamiyoruz.ecomm.model.Seller;
+import com.kodlamiyoruz.ecomm.model.User;
 import com.kodlamiyoruz.ecomm.repository.ProductRepository;
 import com.kodlamiyoruz.ecomm.repository.SellerRepository;
+import com.kodlamiyoruz.ecomm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +39,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
 
     @Override
@@ -109,6 +115,16 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = sellerRepository.findById(id).get();
         List<Product> products = seller.getProducts();
         return productConverter.productListToProductResponseDtoList(products);
+    }
+
+    @Override
+    public List<SellerFollowerResponseDto> findAllFollowerUserBySellerId(int id) {
+        if (!sellerRepository.existsById(id)) {
+            throw new SellerException(id);
+        }
+        Seller seller = sellerRepository.findById(id).get();
+        List<User> followers = seller.getFollowers();
+        return sellerConverter.userListToSellerFollowerResponseDtos(followers);
     }
 
 

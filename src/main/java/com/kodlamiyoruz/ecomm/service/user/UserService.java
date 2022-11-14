@@ -1,9 +1,7 @@
 package com.kodlamiyoruz.ecomm.service.user;
 
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
-import com.kodlamiyoruz.ecomm.dto.user.UserCreateRequestDto;
-import com.kodlamiyoruz.ecomm.dto.user.UserResponseDto;
-import com.kodlamiyoruz.ecomm.dto.user.UserUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.user.*;
 
 import java.util.List;
 
@@ -16,5 +14,13 @@ public interface UserService {
     UserResponseDto findByEmail(String email);
     UserResponseDto updateByUserId(UserUpdateRequestDto dto);
     List<ProductCommentResponseDto> findProductCommentsByUserId(int id);
+    void addCreditCard(CreditCardCreateRequestDto dto);
+    void deleteCreditCardById(int id);
+    List<CreditCardResponseDto> findAllCreditCardByUserId(int id);
+    CreditCardResponseDto findCreditCardByUserIdAndCreditCardId(int userId,int creditCardId);
+
+    void followSellerBySellerId(UserFollowSellerRequestDto dto);
+    List<UserFollowingSellerResponseDto> followingSeller(int id);
+    void removeFollowingSeller(int userId,int sellerId);
 
 }

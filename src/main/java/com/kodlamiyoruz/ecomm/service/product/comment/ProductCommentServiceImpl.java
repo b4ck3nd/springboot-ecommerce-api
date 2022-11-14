@@ -49,9 +49,10 @@ public class ProductCommentServiceImpl implements ProductCommentService{
         comment.setProduct(product);
         product.setProductComments(commentList);
         user.setProductComment(commentList);
-        userRepository.save(user);
-        productRepository.save(product);
         commentRepository.save(comment);
+        productRepository.save(product);
+        userRepository.save(user);
+
     }
 
     @Override

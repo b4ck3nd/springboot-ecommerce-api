@@ -1,9 +1,7 @@
 package com.kodlamiyoruz.ecomm.controller;
 
 
-import com.kodlamiyoruz.ecomm.dto.product.ProductCreateRequestDto;
-import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
-import com.kodlamiyoruz.ecomm.dto.product.ProductUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.product.*;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.service.product.ProductService;
 import io.swagger.annotations.Api;
@@ -11,14 +9,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/product")
@@ -91,10 +84,6 @@ public class ProductController {
         List<ProductCommentResponseDto> dtos = productService.findProductCommentsByProductId(id);
         return new ResponseEntity<>(dtos,HttpStatus.OK);
     }
-
-
-
-
 
 
 }

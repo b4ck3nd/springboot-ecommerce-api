@@ -2,8 +2,10 @@ package com.kodlamiyoruz.ecomm.converter;
 
 
 import com.kodlamiyoruz.ecomm.dto.user.UserCreateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.user.UserFollowingSellerResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.UserUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.model.Seller;
 import com.kodlamiyoruz.ecomm.model.User;
 import org.springframework.stereotype.Component;
 
@@ -50,6 +52,17 @@ public class UserConverter {
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
         return user;
+    }
+
+    public List<UserFollowingSellerResponseDto> sellerListToUserFollowingSellerResponseDtoList(List<Seller> sellers) {
+        List<UserFollowingSellerResponseDto> dtos=new ArrayList<>();
+        sellers.forEach(value -> {
+            UserFollowingSellerResponseDto dto=new UserFollowingSellerResponseDto();
+            dto.setSellerId(value.getId());
+            dto.setSellerName(value.getName());
+            dtos.add(dto);
+        });
+        return dtos;
     }
 
 }

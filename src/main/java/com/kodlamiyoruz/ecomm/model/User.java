@@ -54,6 +54,7 @@ public class User {
     @ApiModelProperty(notes = "list of address field of user object",allowableValues = "List of Address")
     private List<Address> address;
 /*
+
     @OneToMany
     @ApiModelProperty(value = "list of order field of user object",notes = "list of order field of user object",allowableValues = "List of Order")
     private List<Order> orders;
@@ -62,8 +63,15 @@ public class User {
     @JoinColumn(name = "creditcard",referencedColumnName = "id")
     @ApiModelProperty(value = "list of creditcard field of user object",notes = "list of creditcard field of user object",allowableValues = "List of CreditCard")
     private List<CreditCard> creditCards;
-
  */
+    @OneToMany()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ApiModelProperty(value = "list of creditcard field of user object",notes = "list of creditcard field of user object",allowableValues = "List of CreditCard")
+    private List<CreditCard> creditCards;
+
+    @OneToMany()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Seller> following;
 
     public  User() {
         this.createdDate=new Date();

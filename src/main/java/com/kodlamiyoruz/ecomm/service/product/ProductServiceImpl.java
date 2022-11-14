@@ -3,25 +3,14 @@ package com.kodlamiyoruz.ecomm.service.product;
 
 import com.kodlamiyoruz.ecomm.converter.ProductCommentConverter;
 import com.kodlamiyoruz.ecomm.converter.ProductConverter;
-import com.kodlamiyoruz.ecomm.dto.product.ProductCreateRequestDto;
-import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
-import com.kodlamiyoruz.ecomm.dto.product.ProductUpdateRequestDto;
+import com.kodlamiyoruz.ecomm.dto.product.*;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
-import com.kodlamiyoruz.ecomm.exception.CategoryException;
-import com.kodlamiyoruz.ecomm.exception.NotFoundException;
-import com.kodlamiyoruz.ecomm.exception.ProductException;
-import com.kodlamiyoruz.ecomm.exception.SellerException;
-import com.kodlamiyoruz.ecomm.model.Category;
-import com.kodlamiyoruz.ecomm.model.Product;
-import com.kodlamiyoruz.ecomm.model.ProductComment;
-import com.kodlamiyoruz.ecomm.model.Seller;
-import com.kodlamiyoruz.ecomm.repository.CategoryRepository;
-import com.kodlamiyoruz.ecomm.repository.ProductCommentRepository;
-import com.kodlamiyoruz.ecomm.repository.ProductRepository;
-import com.kodlamiyoruz.ecomm.repository.SellerRepository;
-import com.kodlamiyoruz.ecomm.service.product.comment.ProductCommentService;
+import com.kodlamiyoruz.ecomm.exception.*;
+import com.kodlamiyoruz.ecomm.model.*;
+import com.kodlamiyoruz.ecomm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -49,8 +38,14 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductCommentConverter commentConverter;
 
+
     @Autowired
-    ProductCommentService commentService;
+    UserRepository userRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
+
 
 
     @Override
@@ -177,6 +172,11 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findByProductBrandContaining(productBrand);
         return productConverter.productListToProductResponseDtoList(products);
     }
+
+
+
+
+
 
 
 

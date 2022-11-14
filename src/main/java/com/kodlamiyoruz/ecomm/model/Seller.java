@@ -47,6 +47,11 @@ public class Seller {
     @ApiModelProperty(notes = "list of products field of seller object",allowableValues = "List of Products")
     private List<Product> products;
 
+    @OneToMany()
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<User> followers;
+
+
     public Seller(String name,String email) {
         this.name=name;
         this.email=email;

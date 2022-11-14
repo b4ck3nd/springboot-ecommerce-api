@@ -5,6 +5,7 @@ import com.kodlamiyoruz.ecomm.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,9 +29,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     Map<String,String> handleAnnotationErrors(MethodArgumentNotValidException exception) {
         Map<String,String> errors=new HashMap<>();
-        for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
+       for (ObjectError error:exception.getBindingResult().getGlobalErrors()) {
+           errors.put(error.getObjectName(),error.getDefaultMessage());
+       }
         return errors;
     }
 }

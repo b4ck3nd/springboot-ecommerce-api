@@ -19,6 +19,7 @@ import com.kodlamiyoruz.ecomm.repository.SellerRepository;
 import com.kodlamiyoruz.ecomm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
@@ -44,6 +45,8 @@ public class SellerServiceImpl implements SellerService {
     UserRepository userRepository;
 
 
+
+    @Transactional
     @Override
     public void add(SellerCreateRequestDto sellerCreateRequestDto){
         if (sellerRepository.existsSellerByEmail(sellerCreateRequestDto.getEmail())) {
@@ -52,6 +55,7 @@ public class SellerServiceImpl implements SellerService {
         sellerRepository.save(sellerConverter.sellerCreateRequestDtoToSeller(sellerCreateRequestDto));
     }
 
+    @Transactional
     @Override
     public boolean deleteById(int id) {
         /*
@@ -94,6 +98,7 @@ public class SellerServiceImpl implements SellerService {
         return dto;
     }
 
+    @Transactional
     @Override
     public SellerResponseDto updateById(SellerUpdateRequestDto dto) {
         if (!sellerRepository.existsById(dto.getSellerId())) {

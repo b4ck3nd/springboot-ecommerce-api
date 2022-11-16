@@ -37,6 +37,11 @@ public class Seller {
     @ApiModelProperty(notes = "email field of seller object",allowableValues = "String")
     private String email;
 
+    @NotNull
+    @Size(min = 1,max = 50)
+    @ApiModelProperty(notes = "password field of seller object",allowableValues = "String")
+    private String password;
+
     @Column(updatable = false,name = "created_date")
     @CreationTimestamp
     @ApiModelProperty(notes = "createdDate field of seller object",allowableValues = "Date")
@@ -52,9 +57,10 @@ public class Seller {
     private List<User> followers;
 
 
-    public Seller(String name,String email) {
+    public Seller(String name,String email,String password) {
         this.name=name;
         this.email=email;
+        this.password=password;
         this.createdDate=new Date();
     }
     public Seller() {

@@ -33,21 +33,12 @@ public class ProductServiceImpl implements ProductService {
     SellerRepository sellerRepository;
 
     @Autowired
-    ProductCommentRepository commentRepository;
-
-    @Autowired
     ProductCommentConverter commentConverter;
 
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    AddressRepository addressRepository;
 
 
-
-
+    @Transactional
     @Override
     public boolean add(ProductCreateRequestDto dto) {
         Product product = productConverter.productCreateDtoToProduct(dto);
@@ -107,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
         return productConverter.productListToProductResponseDtoList(all);
     }
 
+    @Transactional
     @Override
     public ProductResponseDto updateByProductId(ProductUpdateRequestDto productUpdateRequestDto) {
         /*
@@ -134,6 +126,7 @@ public class ProductServiceImpl implements ProductService {
         return productConverter.productListToProductResponseDtoList(all);
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
         if (productRepository.existsById(id)) {

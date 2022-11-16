@@ -30,6 +30,8 @@ public class Order {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private CreditCard creditCard;
     @CreationTimestamp
     private Date createdDate;
 

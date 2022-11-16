@@ -15,7 +15,7 @@ import java.util.List;
 public class SellerConverter {
 
     public Seller sellerCreateRequestDtoToSeller(SellerCreateRequestDto dto) {
-        return  new Seller(dto.getName(), dto.getEmail());
+        return new Seller(dto.getName(), dto.getEmail(), dto.getPassword());
     }
 
     public List<SellerResponseDto> sellerListToSellerResponseDtoList(List<Seller> sellers) {

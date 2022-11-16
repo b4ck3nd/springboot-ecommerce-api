@@ -4,26 +4,15 @@ package com.kodlamiyoruz.ecomm.service.order;
 import com.kodlamiyoruz.ecomm.converter.OrderConverter;
 import com.kodlamiyoruz.ecomm.dto.order.OrderCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.order.OrderResponseDto;
-import com.kodlamiyoruz.ecomm.exception.AddressException;
-import com.kodlamiyoruz.ecomm.exception.CustomUserException;
-import com.kodlamiyoruz.ecomm.exception.OrderException;
-import com.kodlamiyoruz.ecomm.exception.ProductException;
-import com.kodlamiyoruz.ecomm.model.Address;
-import com.kodlamiyoruz.ecomm.model.Order;
-import com.kodlamiyoruz.ecomm.model.Product;
-import com.kodlamiyoruz.ecomm.model.User;
-import com.kodlamiyoruz.ecomm.repository.AddressRepository;
-import com.kodlamiyoruz.ecomm.repository.OrderRepository;
-import com.kodlamiyoruz.ecomm.repository.ProductRepository;
-import com.kodlamiyoruz.ecomm.repository.UserRepository;
+import com.kodlamiyoruz.ecomm.exception.*;
+import com.kodlamiyoruz.ecomm.model.*;
+import com.kodlamiyoruz.ecomm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -40,6 +29,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderConverter orderConverter;
 
+    @Autowired
+    CreditCardRepository creditCardRepository;
+
 
     @Transactional
     @Override
@@ -53,9 +45,14 @@ public class OrderServiceImpl implements OrderService {
         if (!addressRepository.existsById(dto.getAddressId())) {
             throw new AddressException(dto.getAddressId());
         }
+        if (!creditCardRepository.existsById(dto.getCreditCardId())) {
+            throw new NotFoundException("not found any creditcard with this id: " + dto.getCreditCardId());
+        }
+
         Product product = productRepository.findById(dto.getProductId()).get();
         User user = userRepository.findById(dto.getUserId()).get();
         Address address = addressRepository.findById(dto.getAddressId()).get();
+        CreditCard creditCard = creditCardRepository.findById(dto.getCreditCardId()).get();
         if (dto.getQuantity()> product.getStock()) {
             throw new ProductException("not enough stock for this product: " + product.getProductName());
         }
@@ -68,6 +65,11 @@ public class OrderServiceImpl implements OrderService {
         order.setProductName(product.getProductName());
         order.setProductPrice(product.getProductPrice());
         order.setProductBrand(product.getProductBrand());
+        order.setCreditCard(creditCard);
+        List<Order> orderList=new ArrayList<>();
+        orderList.add(order);
+        user.setOrders(orderList);
+        userRepository.save(user);
         productRepository.save(product);
         orderRepository.save(order);
 
@@ -90,6 +92,7 @@ public class OrderServiceImpl implements OrderService {
         return dtos;
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
         if (!orderRepository.existsById(id)) {

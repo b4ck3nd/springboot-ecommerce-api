@@ -1,6 +1,7 @@
 package com.kodlamiyoruz.ecomm.controller;
 
 
+import com.kodlamiyoruz.ecomm.dto.order.OrderResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.*;
 import com.kodlamiyoruz.ecomm.service.user.UserService;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/user")
-@Api(value = "User Controller",description = "Controller")
+@Api(value = "User Controller")
 public class UserController {
 
     @Autowired
@@ -101,6 +102,12 @@ public class UserController {
     public ResponseEntity<String> removeFollowingSellerBySellerId(@RequestBody UserUnfollowSellerRequestDto dto) {
         userService.removeFollowingSeller(dto.getUserId(),dto.getSellerId());
         return new ResponseEntity<>("seller unfollowing",HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/orders")
+    public ResponseEntity<List<OrderResponseDto>> findAllOrdersByUserId(@PathVariable int id) {
+        List<OrderResponseDto> orders = userService.findAllOrdersByUserId(id);
+        return new ResponseEntity<>(orders,HttpStatus.OK);
     }
 
 

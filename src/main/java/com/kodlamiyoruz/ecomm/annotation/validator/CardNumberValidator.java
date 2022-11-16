@@ -1,16 +1,12 @@
 package com.kodlamiyoruz.ecomm.annotation.validator;
 
-import com.kodlamiyoruz.ecomm.annotation.CardNumberExpiration;
+import com.kodlamiyoruz.ecomm.annotation.CardNumberValidate;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public  class CardNumberExpirationValidator implements ConstraintValidator<CardNumberExpiration, String> {
+public  class CardNumberValidator implements ConstraintValidator<CardNumberValidate, String> {
 
-    @Override
-    public void initialize(CardNumberExpiration annotation) {
-
-    }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

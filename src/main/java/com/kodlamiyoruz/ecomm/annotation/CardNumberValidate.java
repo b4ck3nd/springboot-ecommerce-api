@@ -1,6 +1,6 @@
 package com.kodlamiyoruz.ecomm.annotation;
 
-import com.kodlamiyoruz.ecomm.annotation.validator.CardNumberExpirationValidator;
+import com.kodlamiyoruz.ecomm.annotation.validator.CardNumberValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Target( ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CardNumberExpirationValidator.class)
-public  @interface CardNumberExpiration {
+@Constraint(validatedBy = CardNumberValidator.class)
+public  @interface CardNumberValidate {
     String message() default "invalid cardnumber";
 
     Class<?>[] groups() default {};

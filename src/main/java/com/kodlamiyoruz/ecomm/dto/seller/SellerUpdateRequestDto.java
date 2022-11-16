@@ -8,5 +8,6 @@ public class SellerUpdateRequestDto {
     private int sellerId;
     private String name;
     private String email;
+    private String password;
 
 }

@@ -13,6 +13,7 @@ import com.kodlamiyoruz.ecomm.repository.AddressRepository;
 import com.kodlamiyoruz.ecomm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class AddressServiceImpl implements  AddressService {
     @Autowired
     AddressConverter addressConverter;
 
-
+    @Transactional
     @Override
     public void add(AddressCreateRequestDto dto) {
         if( !userRepository.existsById(dto.getUserId())) {
@@ -68,6 +69,7 @@ public class AddressServiceImpl implements  AddressService {
         return dtos;
     }
 
+    @Transactional
     @Override
     public void deleteByIdd(int addressId) {
         if ( addressRepository.existsById(addressId)) {
@@ -80,6 +82,7 @@ public class AddressServiceImpl implements  AddressService {
 
     }
 
+    @Transactional
     @Override
     public void updateByAddressId(AddressUpdateRequestDto dto) {
         Optional<Address> address = addressRepository.findById(dto.getAddressId());

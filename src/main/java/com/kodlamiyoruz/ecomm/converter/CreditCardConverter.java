@@ -31,6 +31,7 @@ public class CreditCardConverter {
             dto.setExpirationYear(value.getExpirationYear());
             dto.setUserId(value.getUser().getId());
             dto.setUserName(value.getUser().getUserName());
+            dto.setCreatedDate(value.getCreatedDate().toString());
             dtos.add(dto);
         });
         return dtos;
@@ -43,6 +44,7 @@ public class CreditCardConverter {
         dto.setCreditCardId(card.getId());
         dto.setExpirationYear(card.getExpirationYear());
         dto.setExpirationMonth(card.getExpirationMonth());
+        dto.setCreatedDate(card.getCreatedDate().toString());
         return dto;
     }
 }

@@ -15,6 +15,7 @@ import com.kodlamiyoruz.ecomm.repository.ProductRepository;
 import com.kodlamiyoruz.ecomm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class ProductCommentServiceImpl implements ProductCommentService{
     UserRepository userRepository;
 
 
+    @Transactional
     @Override
     public void addCommentToProduct(ProductCommentCreateRequestDto dto) {
         if (!productRepository.existsById(dto.getProductId())) {
@@ -55,6 +57,7 @@ public class ProductCommentServiceImpl implements ProductCommentService{
 
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
         if (commentRepository.existsById(id)) {

@@ -53,6 +53,9 @@ public class User {
     @OneToMany
     @ApiModelProperty(notes = "list of address field of user object",allowableValues = "List of Address")
     private List<Address> address;
+    @OneToMany
+    @ApiModelProperty(value = "list of order field of user object",notes = "list of order field of user object",allowableValues = "List of Order")
+    private List<Order> orders;
 /*
 
     @OneToMany

@@ -11,5 +11,6 @@ public class AddressUpdateRequestDto {
     private String street;
     private String district;
     private String apartmentNumber;
+    private int userId;
 
 }

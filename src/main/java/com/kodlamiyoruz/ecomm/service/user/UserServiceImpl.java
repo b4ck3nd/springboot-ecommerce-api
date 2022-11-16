@@ -2,23 +2,23 @@ package com.kodlamiyoruz.ecomm.service.user;
 
 
 import com.kodlamiyoruz.ecomm.converter.CreditCardConverter;
+import com.kodlamiyoruz.ecomm.converter.OrderConverter;
 import com.kodlamiyoruz.ecomm.converter.ProductCommentConverter;
 import com.kodlamiyoruz.ecomm.converter.UserConverter;
+import com.kodlamiyoruz.ecomm.dto.order.OrderResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.*;
 import com.kodlamiyoruz.ecomm.exception.BadRequestException;
 import com.kodlamiyoruz.ecomm.exception.CustomUserException;
 import com.kodlamiyoruz.ecomm.exception.NotFoundException;
 import com.kodlamiyoruz.ecomm.exception.SellerException;
-import com.kodlamiyoruz.ecomm.model.CreditCard;
-import com.kodlamiyoruz.ecomm.model.ProductComment;
-import com.kodlamiyoruz.ecomm.model.Seller;
-import com.kodlamiyoruz.ecomm.model.User;
+import com.kodlamiyoruz.ecomm.model.*;
 import com.kodlamiyoruz.ecomm.repository.CreditCardRepository;
 import com.kodlamiyoruz.ecomm.repository.SellerRepository;
 import com.kodlamiyoruz.ecomm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     SellerRepository sellerRepository;
+
+    @Autowired
+    OrderConverter orderConverter;
+
+    @Transactional
     @Override
     public void add(UserCreateRequestDto dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
@@ -68,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return userConverter.userToUserResponseDto(get.get());
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
         if (!(userRepository.existsById(id))) {
@@ -96,6 +102,7 @@ public class UserServiceImpl implements UserService {
         return userConverter.userToUserResponseDto(byEmail);
     }
 
+    @Transactional
     @Override
     public UserResponseDto updateByUserId(UserUpdateRequestDto dto) {
         if ( !( userRepository.existsById(dto.getUserId()))) {
@@ -116,6 +123,7 @@ public class UserServiceImpl implements UserService {
         return  commentConverter.productCommentListToProductCommentDtoList(productComment);
     }
 
+    @Transactional
     @Override
     public void addCreditCard(CreditCardCreateRequestDto dto) {
         if (!userRepository.existsById(dto.getUserId())) {
@@ -137,6 +145,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public void deleteCreditCardById(int id) {
         if (!creditCardRepository.existsById(id)) {
@@ -172,6 +181,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Transactional
     @Override
     public void followSellerBySellerId(UserFollowSellerRequestDto dto) {
         if (!userRepository.existsById(dto.getUserId())) {
@@ -202,6 +212,8 @@ public class UserServiceImpl implements UserService {
         return  userConverter.sellerListToUserFollowingSellerResponseDtoList(following);
     }
 
+    @Transactional
+
     @Override
     public void removeFollowingSeller(int userId, int sellerId) {
         if (!userRepository.existsById(userId)) {
@@ -216,6 +228,12 @@ public class UserServiceImpl implements UserService {
         user.getFollowing().remove(seller);
         userRepository.save(user);
         sellerRepository.save(seller);
+    }
+
+    @Override
+    public List<OrderResponseDto> findAllOrdersByUserId(int id) {
+        List<Order> orders = userRepository.findById(id).get().getOrders();
+        return orderConverter.orderListToOrderResponseDtoList(orders);
     }
 
 

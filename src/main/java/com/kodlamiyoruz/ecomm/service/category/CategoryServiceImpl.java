@@ -9,6 +9,7 @@ import com.kodlamiyoruz.ecomm.model.Category;
 import com.kodlamiyoruz.ecomm.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryConverter categoryConverter;
+
 
 
     @Override
@@ -54,12 +56,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Transactional
     @Override
     public void add(CategoryCreateRequestDto categoryCreateRequestDto) {
         Category category = categoryConverter.categoryCreateDtoToCategory(categoryCreateRequestDto);
         categoryRepository.save(category);
     }
-
+    @Transactional
     @Override
     public String deleteById(int id) {
        if (categoryRepository.existsById(id)) {
@@ -73,42 +76,6 @@ public class CategoryServiceImpl implements CategoryService {
        }
     }
 
-    /*
-
-    @PostConstruct
-    public void test1() {
-        Category category=new Category();
-        category.setCategoryName("gaming laptop");
-        categoryRepository.save(category);
-    }
-    @PostConstruct
-    public void test2() {
-        Category category=new Category();
-        category.setCategoryName("laptop");
-        categoryRepository.save(category);
-    }
-    @PostConstruct
-    public void test3() {
-        Category category=new Category();
-        category.setCategoryName("gaming pad");
-        categoryRepository.save(category);
-    }
-    @PostConstruct
-    public void test4() {
-        Category category=new Category();
-        category.setCategoryName("gaming headphones");
-        categoryRepository.save(category);
-    }
-    @PostConstruct
-    public void test5() {
-        Category category=new Category();
-        category.setCategoryName("kaban");
-        categoryRepository.save(category);
-    }
-
-
-
-     */
 
 
 }

@@ -58,7 +58,29 @@ public class SellerServiceImpl implements SellerService {
     @Transactional
     @Override
     public boolean deleteById(int id) {
+
+        Optional<Seller> byId = sellerRepository.findById(id);
+        if (byId.isPresent()) {
+            Seller seller = byId.get();
+            List<Product> products = seller.getProducts();
+
+            if (!CollectionUtils.isEmpty(seller.getProducts())) {
+
+                products.forEach( value -> {
+                    productRepository.deleteById(value.getId());
+                    products.remove(value);
+                });
+            }
+            seller.setProducts(products);
+            sellerRepository.deleteById(id);
+            return true;
+
+        }
+        else {
+            return false;
+        }
         /*
+
         if (sellerRepository.existsById(id)) {
 
             Optional<Seller> seller = sellerRepository.findById(id);
@@ -68,15 +90,24 @@ public class SellerServiceImpl implements SellerService {
                     productRepository.delete(val);
                     products.remove(val);
                 });
+                seller.get().setProducts(products);
+
             }
+
             sellerRepository.deleteById(id);
             return true;
+
+
         }
         */
-        if (sellerRepository.existsById(id)) {
+
+        /*if (sellerRepository.existsById(id)) {
             sellerRepository.deleteById(id);
             return true;
         } else return false;
+         */
+
+
     }
 
     @Override

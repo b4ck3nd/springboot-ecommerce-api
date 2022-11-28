@@ -1,10 +1,8 @@
 package com.kodlamiyoruz.ecomm.service.user;
 
 
-import com.kodlamiyoruz.ecomm.converter.CreditCardConverter;
-import com.kodlamiyoruz.ecomm.converter.OrderConverter;
-import com.kodlamiyoruz.ecomm.converter.ProductCommentConverter;
-import com.kodlamiyoruz.ecomm.converter.UserConverter;
+import com.kodlamiyoruz.ecomm.converter.*;
+import com.kodlamiyoruz.ecomm.dto.address.AddressResponseDto;
 import com.kodlamiyoruz.ecomm.dto.order.OrderResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.*;
@@ -46,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     OrderConverter orderConverter;
+
+    @Autowired
+    AddressConverter addressConverter;
 
     @Transactional
     @Override
@@ -130,10 +131,10 @@ public class UserServiceImpl implements UserService {
             throw new CustomUserException(dto.getUserId());
         }
         if (dto.getExpirationMonth()<new Date().getMonth()) {
-            throw new NotFoundException("month must be greater than or equal to" + new Date().getMonth());
+            throw new NotFoundException("month must be greater than or equal to " + new Date().getMonth());
         }
         if (dto.getExpirationYear() < new Date().getYear()) {
-            throw new NotFoundException("year must be greater than or equal to" + new Date().getYear());
+            throw new NotFoundException("year must be greater than or equal to " + new Date().getYear());
         }
         CreditCard card = creditCardConverter.creditCardCreateRequestDtoDoCreditCard(dto);
         User user = userRepository.findById(dto.getUserId()).get();
@@ -235,6 +236,8 @@ public class UserServiceImpl implements UserService {
         List<Order> orders = userRepository.findById(id).get().getOrders();
         return orderConverter.orderListToOrderResponseDtoList(orders);
     }
+
+
 
 
     @PostConstruct

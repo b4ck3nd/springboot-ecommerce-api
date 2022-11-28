@@ -58,7 +58,7 @@ public class SellerServiceImpl implements SellerService {
     @Transactional
     @Override
     public boolean deleteById(int id) {
-
+        /*
         Optional<Seller> byId = sellerRepository.findById(id);
         if (byId.isPresent()) {
             Seller seller = byId.get();
@@ -79,6 +79,14 @@ public class SellerServiceImpl implements SellerService {
         else {
             return false;
         }
+
+         */
+        Optional<Seller> byId = sellerRepository.findById(id);
+        if (byId.isPresent()) {
+            sellerRepository.deleteById(id);
+            return true;
+        }
+        return false;
         /*
 
         if (sellerRepository.existsById(id)) {
@@ -182,4 +190,13 @@ public class SellerServiceImpl implements SellerService {
     }
 
      */
+    @PostConstruct
+    private void test() {
+        Seller seller=new Seller();
+        seller.setName("seller 1");
+        seller.setEmail("seller1@seller.com");
+        seller.setPassword("password");
+        sellerRepository.save(seller);
+    }
+
 }

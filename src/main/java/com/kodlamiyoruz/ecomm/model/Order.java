@@ -2,6 +2,7 @@ package com.kodlamiyoruz.ecomm.model;
 
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -28,10 +29,8 @@ public class Order {
     private Seller seller;
 
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private User user;
-
-    @ManyToOne
-    private CreditCard creditCard;
     @CreationTimestamp
     private Date createdDate;
 

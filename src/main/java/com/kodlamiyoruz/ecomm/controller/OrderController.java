@@ -36,8 +36,7 @@ public class OrderController {
 
     //@PostMapping("/add")
     @RequestMapping(value = "/add",method = {RequestMethod.GET,RequestMethod.POST})
-    public ResponseEntity<String> createOrder(@RequestBody OrderCreateRequestDto dto) {
-        orderService.createOrder(dto);
+    public ResponseEntity<String> createOrder(@RequestBody OrderCreateRequestDto dto) {orderService.createOrder(dto);
         return new ResponseEntity<>("added",HttpStatus.OK);
     }
 

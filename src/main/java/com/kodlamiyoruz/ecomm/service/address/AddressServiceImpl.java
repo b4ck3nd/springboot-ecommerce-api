@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +37,13 @@ public class AddressServiceImpl implements  AddressService {
         if( !userRepository.existsById(dto.getUserId())) {
             throw new CustomUserException(dto.getUserId());
         }
-        Optional<User> user = userRepository.findById(dto.getUserId());
+        User user = userRepository.findById(dto.getUserId()).get();
         Address address=addressConverter.addressCreateRequestDtoToAddress(dto);
-        address.setUser(user.get());
+        address.setUser(user);
+        List<Address> addressList=new ArrayList<>();
+        addressList.add(address);
+        user.setAddress(addressList);
+        userRepository.save(user);
         addressRepository.save(address);
     }
 

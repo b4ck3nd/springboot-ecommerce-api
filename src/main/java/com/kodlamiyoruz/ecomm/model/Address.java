@@ -4,6 +4,7 @@ package com.kodlamiyoruz.ecomm.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -43,6 +44,7 @@ public class Address {
     private String apartmentNumber;
 
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "user field of address object",allowableValues = "User")
     private User user;
 

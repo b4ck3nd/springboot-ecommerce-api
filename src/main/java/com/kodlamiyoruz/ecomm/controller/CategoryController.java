@@ -3,6 +3,7 @@ package com.kodlamiyoruz.ecomm.controller;
 
 import com.kodlamiyoruz.ecomm.dto.category.CategoryCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.category.CategoryResponseDto;
+import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
 import com.kodlamiyoruz.ecomm.service.category.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +52,12 @@ public class CategoryController {
     public ResponseEntity<String> deleteById(@PathVariable int id) {
         String msg= categoryService.deleteById(id);
         return new ResponseEntity<>(msg,HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/products")
+    public ResponseEntity<List<ProductResponseDto>> findAllProductsByCategoryId(@PathVariable int id) {
+        List<ProductResponseDto> all = categoryService.findAllProductByCategoryId(id);
+        return new ResponseEntity<>(all,HttpStatus.OK);
     }
 
 

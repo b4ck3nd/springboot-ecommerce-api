@@ -2,10 +2,14 @@ package com.kodlamiyoruz.ecomm.service.category;
 
 
 import com.kodlamiyoruz.ecomm.converter.CategoryConverter;
+import com.kodlamiyoruz.ecomm.converter.ProductConverter;
 import com.kodlamiyoruz.ecomm.dto.category.CategoryCreateRequestDto;
 import com.kodlamiyoruz.ecomm.dto.category.CategoryResponseDto;
+import com.kodlamiyoruz.ecomm.dto.product.ProductResponseDto;
+import com.kodlamiyoruz.ecomm.exception.CategoryException;
 import com.kodlamiyoruz.ecomm.exception.NotFoundException;
 import com.kodlamiyoruz.ecomm.model.Category;
+import com.kodlamiyoruz.ecomm.model.Product;
 import com.kodlamiyoruz.ecomm.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     CategoryConverter categoryConverter;
+
+    @Autowired
+    ProductConverter productConverter;
 
 
 
@@ -76,6 +83,22 @@ public class CategoryServiceImpl implements CategoryService {
        }
     }
 
+    @Override
+    public List<ProductResponseDto> findAllProductByCategoryId(int id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new CategoryException(id);
+        }
+        List<Product> products = categoryRepository.findById(id).get().getProducts();
+        return  productConverter.productListToProductResponseDtoList(products);
+
+    }
+
+    @PostConstruct
+    public void test() {
+        Category c=new Category();
+        c.setCategoryName("test");
+        categoryRepository.save(c);
+    }
 
 
 }

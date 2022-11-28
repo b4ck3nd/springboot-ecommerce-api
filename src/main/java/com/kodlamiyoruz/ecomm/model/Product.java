@@ -41,8 +41,8 @@ public class Product {
     @ApiModelProperty(notes = "createdDate field of product model",allowableValues = "Date")
     private Date createdDate;
 
-
     @ManyToOne()
+    //@JoinColumn(name = "id")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "seller field of product model",allowableValues = "Seller")
     private Seller seller;

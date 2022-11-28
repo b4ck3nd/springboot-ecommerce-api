@@ -51,9 +51,11 @@ public class User {
 
 
     @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "list of address field of user object",allowableValues = "List of Address")
     private List<Address> address;
     @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(value = "list of order field of user object",notes = "list of order field of user object",allowableValues = "List of Order")
     private List<Order> orders;
 /*
@@ -85,5 +87,4 @@ public class User {
         this.email=email;
         this.createdDate=new Date();
     }
-
 }

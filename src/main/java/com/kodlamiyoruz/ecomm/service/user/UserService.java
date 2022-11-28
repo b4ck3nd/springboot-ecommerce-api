@@ -1,5 +1,6 @@
 package com.kodlamiyoruz.ecomm.service.user;
 
+import com.kodlamiyoruz.ecomm.dto.address.AddressResponseDto;
 import com.kodlamiyoruz.ecomm.dto.order.OrderResponseDto;
 import com.kodlamiyoruz.ecomm.dto.product.comment.ProductCommentResponseDto;
 import com.kodlamiyoruz.ecomm.dto.user.*;
@@ -25,5 +26,7 @@ public interface UserService {
     void removeFollowingSeller(int userId,int sellerId);
 
     List<OrderResponseDto> findAllOrdersByUserId(int id);
+
+
 
 }

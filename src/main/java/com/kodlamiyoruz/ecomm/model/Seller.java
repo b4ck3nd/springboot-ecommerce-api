@@ -48,7 +48,7 @@ public class Seller {
     private Date createdDate;
 
     @OneToMany()
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ApiModelProperty(notes = "list of products field of seller object",allowableValues = "List of Products")
     private List<Product> products;
 

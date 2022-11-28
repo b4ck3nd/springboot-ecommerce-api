@@ -8,6 +8,4 @@ public class OrderCreateRequestDto {
     private int addressId;
     private int userId;
     private int quantity;
-    private int creditCardId;
-
 }

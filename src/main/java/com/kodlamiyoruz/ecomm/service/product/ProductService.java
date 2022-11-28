@@ -14,9 +14,6 @@ public interface ProductService {
     List<ProductResponseDto> findAll();
     void deleteById(int id);
     List<ProductCommentResponseDto> findProductCommentsByProductId(int id);
-    List<ProductResponseDto> searchProductByProductName(String productName);
-
-    List<ProductResponseDto> searchProductByProductBrand(String productBrand);
 
 
 

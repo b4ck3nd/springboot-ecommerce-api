@@ -9,6 +9,9 @@ import com.kodlamiyoruz.ecomm.exception.*;
 import com.kodlamiyoruz.ecomm.model.*;
 import com.kodlamiyoruz.ecomm.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -39,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Transactional
+    @CachePut(cacheNames = "product",key = "#dto.id")
     @Override
     public boolean add(ProductCreateRequestDto dto) {
         Product product = productConverter.productCreateDtoToProduct(dto);
@@ -67,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
         return true;
     }
 
+    @Cacheable(cacheNames = "product",key = "#id")
     @Override
     public ProductResponseDto findById(int id) {
         Optional<Product> byId = productRepository.findById(id);
@@ -80,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
         return addCategoryNameAndSellerNameToProductResponseDto(dto,categoryName,sellerName);
     }
 
+    @Cacheable(cacheNames = "product",key = "#productName")
     @Override
     public List<ProductResponseDto> findByProductName(String productName) {
         List<Product> all = productRepository.findByProductNameContaining(productName);
@@ -89,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
         return productConverter.productListToProductResponseDtoList(all);
     }
 
+    @Cacheable(cacheNames = "product",key = "#productBrand")
     @Override
     public List<ProductResponseDto> findByProductBrand(String productBrand) {
         List<Product> all = productRepository.findByProductBrandContaining(productBrand);
@@ -99,8 +106,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
+    @CachePut(cacheNames = "product",key = "#dto.id",condition = "#result != null")
     @Override
-    public ProductResponseDto updateByProductId(ProductUpdateRequestDto productUpdateRequestDto) {
+    public ProductResponseDto updateByProductId(ProductUpdateRequestDto dto) {
         /*
         Optional<Product> get = productRepository.findById(id);
         if (!get.isPresent()) {
@@ -110,15 +118,16 @@ public class ProductServiceImpl implements ProductService {
         return  productConverter.productToProductResponseDto(productRepository.save(product));
 
         */
-        if ( !(productRepository.existsById(productUpdateRequestDto.getProductId())) ) {
-            throw new ProductException(productUpdateRequestDto.getProductId());
+        if ( !(productRepository.existsById(dto.getProductId())) ) {
+            throw new ProductException(dto.getProductId());
         }
-        Optional<Product> prod = productRepository.findById(productUpdateRequestDto.getProductId());
-        Product product=updateProduct(prod.get(),productUpdateRequestDto);
+        Optional<Product> prod = productRepository.findById(dto.getProductId());
+        Product product=updateProduct(prod.get(),dto);
         productRepository.save(product);
         return productConverter.productToProductResponseDto(product);
     }
 
+    @Cacheable(cacheNames = "product")
     @Override
     public List<ProductResponseDto> findAll() {
         List<Product> all = productRepository.findAll();
@@ -127,6 +136,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "product",key = "#id")
     @Override
     public void deleteById(int id) {
         if (productRepository.existsById(id)) {
@@ -138,6 +148,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Cacheable(cacheNames = "comment",key = "#id")
     @Override
     public List<ProductCommentResponseDto> findProductCommentsByProductId(int id) {
 
@@ -153,6 +164,7 @@ public class ProductServiceImpl implements ProductService {
         return  commentConverter.productCommentListToProductCommentDtoList(comments);
         */
     }
+    /*
 
     @Override
     public List<ProductResponseDto> searchProductByProductName(String productName) {
@@ -166,10 +178,7 @@ public class ProductServiceImpl implements ProductService {
         return productConverter.productListToProductResponseDtoList(products);
     }
 
-
-
-
-
+     */
 
 
 

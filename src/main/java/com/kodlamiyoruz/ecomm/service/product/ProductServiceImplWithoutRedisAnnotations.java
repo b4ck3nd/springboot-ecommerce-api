@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImplWithoutRedisAnnotations implements ProductService {
 
     @Autowired
     ProductRepository productRepository;
@@ -40,11 +40,16 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductCommentConverter commentConverter;
 
+    @Autowired
+    RedisTemplate redisTemplate;
+
+    HashOperations hashOperations= redisTemplate.opsForHash();
+
 
 
 
     @Transactional
-    @CachePut(cacheNames = "product",key = "#dto.id")
+    //@CachePut(cacheNames = "product")
     @Override
     public boolean add(ProductCreateRequestDto dto) {
         Product product = productConverter.productCreateDtoToProduct(dto);
@@ -69,6 +74,9 @@ public class ProductServiceImpl implements ProductService {
         categoryRepository.save(category);
         sellerRepository.save(seller);
 
+        hashOperations.put("PRODUCT",product.getId(),product);
+        hashOperations.put("CATEGORY",category.getCategoryId(),category);
+        hashOperations.put("SELLER",seller.getId(),seller);
 
         return true;
     }
@@ -235,3 +243,4 @@ public class ProductServiceImpl implements ProductService {
 
      */
 }
+
